@@ -139,6 +139,9 @@ def choose():
     
     with open("pokemon.json") as f:
         pokemon = json.load(f)
+
+        aopkmn = sum(1 for key in pokemon) - 1
+        
         pid = 0
         for key in pokemon:
             print("Name", key, "| Id:", pid)
@@ -148,19 +151,18 @@ def choose():
 
     health += pokemon[pkmn]['stats']['health']
 
-    aopkmn = sum(1 for key in pokemon)
     print(aopkmn)
-    nepkmn = random.randint(1, aopkmn)
-    pid2 = 1
+    nepkmn = random.randint(0, aopkmn)
+    print("Right here", nepkmn)
+    pid2 = 0
     for key in pokemon:
-        print(key)
-        if nepkmn == pid:
+        print(key, pid2)
+        if nepkmn == pid2:
             epkmn = key
             ehealth += pokemon[key]['stats']['health']
-            pid += 1
         pid2 += 1
 
-    print(epkmn)
+    print("This should have a value >> ", epkmn)
 
     fight()
 
