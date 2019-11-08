@@ -1,20 +1,47 @@
 {
   "Pikachu": {
     "stats": {
-      "health": 100
+      "health": 300
     },
     "moves": {
       "Thunder bolt": {
-        "damage": 75
+        "damage": 75,
+        "accuracy": 90
       },
       "Quick attack": {
-        "damage": 35
+        "damage": 35,
+        "accuracy": 100
       },
       "Thunder": {
-        "damage": 120
+        "damage": 120,
+        "accuracy": 50
       },
       "Tackle": {
-        "damage": 40
+        "damage": 40,
+        "accuracy": 90
+      }
+    }
+  },
+  "The Bitch": {	
+    "stats": {
+      "health": 50
+    },
+    "moves": {
+      "Bitch slap": {
+        "damage": 1000,
+        "accuracy": 10
+      },
+      "Bitch slap but slightly worse": {
+        "damage": 999,
+        "accuracy": 9
+      },
+      "Bitch slap but even shittier": {
+        "damage": 998,
+        "accuracy": 8
+      },
+      "Nothing": {
+        "damage": 0,
+        "accuracy": 0
       }
     }
   }
