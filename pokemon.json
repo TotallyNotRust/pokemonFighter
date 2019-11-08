@@ -1,0 +1,21 @@
+{
+  "Pikachu": {
+    "stats": {
+      "health": 100
+    },
+    "moves": {
+      "Thunder bolt": {
+        "damage": 75
+      },
+      "Quick attack": {
+        "damage": 35
+      },
+      "Thunder": {
+        "damage": 120
+      },
+      "Tackle": {
+        "damage": 40
+      }
+    }
+  }
+}
