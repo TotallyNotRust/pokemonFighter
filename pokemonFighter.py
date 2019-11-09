@@ -2,7 +2,6 @@ import json
 import random
 from tkinter import *
 import time
-import random
 
 pkmn = ""
 epkmn = ""
