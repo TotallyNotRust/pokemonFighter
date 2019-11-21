@@ -19,87 +19,56 @@ def enemy_victory():
     print("You loose")
     window.destroy()
 
-def move1(pkmn, text2, health, enemyhealth):
+def whofirst(moven, pkmn, epkmn, text2):
+    global health
     global ehealth
     with open("pokemon.json") as f:
         pokemon = json.load(f)
-    moves = getmoves(pkmn)
-    move = moves[0]
-    damage = pokemon[pkmn]['moves'][move]['damage']
-    hit = random.randint(0, 100)
-    if hit <= pokemon[pkmn]['moves'][move]['accuracy'] or hit == pokemon[pkmn]['moves'][move]['accuracy']:
-        damage = pokemon[pkmn]['moves'][move]['damage']
-        enemyhealth -= damage
-        text2.insert(END, 'YOU : {} used {} doing {} damage ({} health remains)\n'.format(pkmn, move, damage, enemyhealth))
-        ehealth = enemyhealth
-    else:
-        text2.insert(END, 'YOU : {} used {}, and missed\n'.format(pkmn, move))
-    if not ehealth <= 1:
+    if pokemon[pkmn]['stats']['speed'] >= pokemon[epkmn]['stats']['speed']:
+        move(moven, pkmn, text2, health)
         enemy_attack(text2)
-    else:
-        victory_you()
-        
-                
-def move2(pkmn, text2, health, enemyhealth):
-    global ehealth
-    with open("pokemon.json") as f:
-        pokemon = json.load(f)
-    moves = getmoves(pkmn)
-    move = moves[1]
-    damage = pokemon[pkmn]['moves'][move]['damage']
-    hit = random.randint(0, 100)
-    if hit <= pokemon[pkmn]['moves'][move]['accuracy'] or hit == pokemon[pkmn]['moves'][move]['accuracy']:
-        damage = pokemon[pkmn]['moves'][move]['damage']
-        enemyhealth -= damage
-        text2.insert(END, 'YOU : {} used {} doing {} damage ({} health remains)\n'.format(pkmn, move, damage, enemyhealth))
-        ehealth = enemyhealth
-    else:
-        text2.insert(END, 'YOU : {} used {}, and missed\n'.format(pkmn, move))
-    if not ehealth <= 1:
+    elif pokemon[pkmn]['stats']['speed'] <= pokemon[epkmn]['stats']['speed']:
         enemy_attack(text2)
-    else:
-        victory_you()
-        
-
-def move3(pkmn, text2, health, enemyhealth):
-    global ehealth
-    with open("pokemon.json") as f:
-        pokemon = json.load(f)
-    moves = getmoves(pkmn)
-    move = moves[2]
-    damage = pokemon[pkmn]['moves'][move]['damage']
-    hit = random.randint(0, 100)
-    if hit <= pokemon[pkmn]['moves'][move]['accuracy'] or hit == pokemon[pkmn]['moves'][move]['accuracy']:
-        damage = pokemon[pkmn]['moves'][move]['damage']
-        enemyhealth -= damage
-        text2.insert(END, 'YOU : {} used {} doing {} damage ({} health remains)\n'.format(pkmn, move, damage, enemyhealth))
-        ehealth = enemyhealth
-    else:
-        text2.insert(END, 'YOU : {} used {}, and missed\n'.format(pkmn, move))
-    if not ehealth <= 1:
-        enemy_attack(text2)
-    else:
-        victory_you()
+        move(moven, pkmn, text2, health)
     
+    else:
+        wmf = random.randint(1,2)
+        if wmf == 1:
+            move(moven, pkmn, text2, health)
+            enemy_attack(text2)
+        elif wmf == 2:
+            enemy_attack(text2)
+            move(moven, pkmn, text2, health)
+    
+    if ehealth == 0 or ehealth <= 0:
+        victory_you()
+    elif health == 0 or health <= 0:
+        enemy_victory()
+            
 
-def move4(pkmn, text2, health, enemyhealth):
+
+def move(moven : int, pkmn, text2, health):
     global ehealth
+    global moves
     with open("pokemon.json") as f:
         pokemon = json.load(f)
-    moves = getmoves(pkmn)
-    move = moves[3]
+    move = moves[moven]
     hit = random.randint(0, 100)
     if hit <= pokemon[pkmn]['moves'][move]['accuracy'] or hit == pokemon[pkmn]['moves'][move]['accuracy']:
-        damage = pokemon[pkmn]['moves'][move]['damage']
-        enemyhealth -= damage
-        text2.insert(END, 'YOU : {} used {} doing {} damage ({} health remains)\n'.format(pkmn, move, damage, enemyhealth))
-        ehealth = enemyhealth
+        damage = calcStrength(pokemon[pkmn]['moves'][move]['damage'], pkmn, epkmn)
+        ehealth -= damage
+        text2.insert(END, 'YOU : {} used {} doing {} damage ({} health remains)\n'.format(pkmn, move, damage, ehealth))
     else:
         text2.insert(END, 'YOU : {} used {}, and missed\n'.format(pkmn, move))
-    if not ehealth <= 1:
-        enemy_attack(text2)
-    else:
-        victory_you()
+        
+def calcStrength(damage, pkmn, epkmn):
+    with open("pokemon.json") as f:
+        pokemon = json.load(f)
+    strenthMultiplier = pokemon[pkmn]['stats']['strength']
+    defenseMultiplier = pokemon[epkmn]['stats']['defense']
+    damageDone = round(damage * strenthMultiplier / defenseMultiplier)
+    print(damage * strenthMultiplier)
+    return damageDone
 
 
 def enemy_attack(text2):
@@ -118,7 +87,7 @@ def enemy_attack(text2):
         if count == moven:
             hit = random.randint(0, 100)
             if hit <= pokemon[epkmn]['moves'][key]['accuracy'] or hit == pokemon[epkmn]['moves'][key]['accuracy']:
-                damage = pokemon[epkmn]['moves'][key]['damage']
+                damage = calcStrength(pokemon[epkmn]['moves'][key]['damage'], epkmn, pkmn)
                 health -= damage
                 text2.insert(END, 'ENEMY : {} used {} doing {} damage ({} health remains)\n'.format(epkmn, key, damage, health))
             else:
@@ -158,7 +127,7 @@ def choose():
         print(key, pid2)
         if nepkmn == pid2:
             epkmn = key
-            ehealth += pokemon[key]['stats']['health']
+            ehealth = pokemon[key]['stats']['health']
         pid2 += 1
 
     print("This should have a value >> ", epkmn)
@@ -167,13 +136,17 @@ def choose():
 
 def fight():
     global ehealth
+    global epkmn
     global health
     global window
     
     window = Tk()
 
 
-    moves = getmoves(pkmn)
+    with open("pokemon.json") as f:
+        pokemon = json.load(f)
+        for key in pokemon[pkmn]['moves']:
+            moves.append(key)
                 
     print(moves[0])
         
@@ -185,21 +158,12 @@ def fight():
     text2.insert(END, "Enemy :  Go {} ({} health)\n".format(epkmn, ehealth))
 
 
-    Button(window, text=moves[0], command= lambda *args: move1(pkmn, text2, health, ehealth)).pack()
-    Button(window, text=moves[1], command= lambda *args: move2(pkmn, text2, health, ehealth)).pack()
-    Button(window, text=moves[2], command= lambda *args: move3(pkmn, text2, health, ehealth)).pack()
-    Button(window, text=moves[3], command= lambda *args: move4(pkmn, text2, health, ehealth)).pack()
+    Button(window, text=moves[0], command= lambda *args: whofirst(0, pkmn, epkmn, text2)).pack()
+    Button(window, text=moves[1], command= lambda *args: whofirst(1, pkmn, epkmn, text2)).pack()
+    Button(window, text=moves[2], command= lambda *args: whofirst(2, pkmn, epkmn, text2)).pack()
+    Button(window, text=moves[3], command= lambda *args: whofirst(3, pkmn, epkmn, text2)).pack()
 
 
 
 
-def getmoves(pkmn):
-    with open("pokemon.json") as f:
-        pokemon = json.load(f)
-            
-    for key in pokemon[pkmn]['moves']:
-        moves.append(key)
-        print(moves)
-    return moves
-
-choose()    
+choose()
