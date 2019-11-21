@@ -42,12 +42,12 @@
         "accuracy": 100
       },
       "Tackle ": {
-        "damage": 100,
-        "accuracy": 0
+        "damage": 40,
+        "accuracy": 100
       },
-      "Bruh attack": {
-        "damage": 100,
-        "accuracy": 0
+      "Ghost ball": {
+        "damage": 55,
+        "accuracy": 95
       }
     }
   }
