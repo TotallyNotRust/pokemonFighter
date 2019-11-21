@@ -1,7 +1,10 @@
 {
   "Pikachu": {
     "stats": {
-      "health": 300
+      "health": 300,
+      "strength": 0.5,
+      "speed": 100,
+      "defense": 1.109:19 21-11-2019
     },
     "moves": {
       "Thunder bolt": {
@@ -22,25 +25,28 @@
       }
     }
   },
-  "The Bitch": {	
+  "Umbreon": {
     "stats": {
-      "health": 50
+      "strength": 0.9,
+      "health": 250,
+      "speed": 300,
+      "defense": 1.8
     },
     "moves": {
-      "Bitch slap": {
-        "damage": 1000,
-        "accuracy": 10
+      "Shadow ball": {
+        "damage": 75,
+        "accuracy": 90
       },
-      "Bitch slap but slightly worse": {
-        "damage": 999,
-        "accuracy": 9
+      "Shadow Sneak": {
+        "damage": 50,
+        "accuracy": 100
       },
-      "Bitch slap but even shittier": {
-        "damage": 998,
-        "accuracy": 8
+      "Tackle ": {
+        "damage": 100,
+        "accuracy": 0
       },
-      "Nothing": {
-        "damage": 0,
+      "Bruh attack": {
+        "damage": 100,
         "accuracy": 0
       }
     }
