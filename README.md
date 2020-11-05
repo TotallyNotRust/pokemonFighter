@@ -1,2 +1,2 @@
-# pokemonFighter
+# Pokemon Fighter
  
